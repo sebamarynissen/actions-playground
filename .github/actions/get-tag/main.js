@@ -2,6 +2,8 @@ import github from '@actions/github';
 import core from '@actions/core';
 
 console.log(github.context);
+console.log('logging input version');
+console.log(core.getInput('version'));
 if (github.context.eventName === 'pull_request') {
 	let labels = github.context.payload.pull_request.labels.map(label => label.name);
 	if (labels.includes('major')) {
