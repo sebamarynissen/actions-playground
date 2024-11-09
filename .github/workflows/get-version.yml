@@ -27,4 +27,7 @@ jobs:
       - id: get-tag
         uses: ./.github/actions/get-tag
       - run: echo ${{ steps.get-tag.outputs.version }}
+      - run: |
+          git config --global user.name "${{ GITHUB_ACTOR }}"
+          git config --global user.email "${{ GITHUB_ACTOR }}@users.noreply.github.com"
       - run: npm version ${{ steps.get-tag.outputs.version }}
