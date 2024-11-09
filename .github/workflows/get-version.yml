@@ -37,6 +37,8 @@ jobs:
         name: Read version
         uses: ./.github/actions/get-version
 
+      - run: echo ${{ steps.read-version.outputs.npm-tag }}
+
       - name: Create release
         uses: softprops/action-gh-release@v2
         with:
