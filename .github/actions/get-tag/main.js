@@ -1,7 +1,7 @@
 import github from '@actions/github';
 import core from '@actions/core';
 
-// console.log(github.context.payload.);
+console.log(github.context);
 if (github.context.eventName === 'pull_request') {
 	let labels = github.context.payload.pull_request.labels.map(label => label.name);
 	if (labels.includes('major')) {
