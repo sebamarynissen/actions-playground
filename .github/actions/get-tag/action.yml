@@ -1,0 +1,8 @@
+name: get-tag
+description: Determines what tag to use in npm.version
+outputs:
+  tag:
+    description: The tag to be used in npm version
+runs:
+  using: 'node20'
+  main: 'main.js'

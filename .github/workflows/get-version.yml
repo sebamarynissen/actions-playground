@@ -1,0 +1,29 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+    types:
+      - closed
+  workflow_dispatch:
+    inputs:
+      version:
+        description: The version of the release.
+        required: true
+        default: patch
+
+jobs:
+  test:
+    # if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - name: Install
+        run: npm ci
+      - id: get-tag
+        uses: ./.github/actions/get-tag
+      - run: echo ${{ steps.get-tag.outputs.version }}
+      - run: npm version ${{ steps.get-tag.outputs.version }}
