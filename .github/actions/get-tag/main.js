@@ -3,11 +3,14 @@ import core from '@actions/core';
 
 // console.log(github.context.payload.);
 if (github.context.eventName === 'pull_request') {
-	let { labels } = github.context.payload.pull_request;
-	console.log(labels);
-	// if (labels.includes('major')) {
-	// 	core.setOutput('version', 'major');
-	// } else if (labels.includes('minor')) {}
+	let labels = github.context.payload.pull_request.labels.map(label => label.name);
+	if (labels.includes('major')) {
+		core.setOutput('version', 'major');
+	} else if (labels.includes('minor')) {
+		core.setOutput('version', 'minor');
+	} else {
+		core.setOutput('version', 'patch');
+	}
+} else if (github.context.eventName === 'workflow_dispatch') {
+	core.setOutput('version', core.getInput('version'));
 }
-
-core.setOutput('version', '1.0.1');
