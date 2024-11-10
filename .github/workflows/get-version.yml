@@ -63,10 +63,11 @@ jobs:
         shell: bash
         run: |
           UPLOAD_URL=$(echo "$UPLOAD_URL" | sed 's/{?name,label}//')"?name=linux.html&label=linux"
+          echo $UPLOAD_URL
 
           curl -L \
           -X POST \
-          --fail-with-body
+          --fail-with-body \
           -H "Accept: application/vnd.github+json" \
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
