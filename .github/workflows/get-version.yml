@@ -61,7 +61,7 @@ jobs:
           ASSET_PATH: ./linux.html
         shell: bash
         run: |
-          UPLOAD_URL=$(echo "$UPLOAD_URL" | sed 's/{?name,label}//')"?name=${linux.html}&label=${linux}"
+          UPLOAD_URL=$(echo "$UPLOAD_URL" | sed 's/{?name,label}//')"?name=linux.html&label=linux"
 
           curl -L \
           -X POST \
