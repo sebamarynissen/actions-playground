@@ -54,6 +54,7 @@ jobs:
     needs: test
     steps:
       - uses: actions/checkout@v4
+      - run: echo ${{ needs.test.outputs.url }}
       - name: Upload asset
         env:
           UPLOAD_URL: ${{ needs.test.outputs.url }}
@@ -66,5 +67,5 @@ jobs:
           -H "Authorization: Bearer $GITHUB_TOKEN" \
           -H "X-GitHub-Api-Version: 2022-11-28" \
           -H "Content-Type: application/octet-stream" \
-          $UPLOAD_URL \
+          ${{ needs.test.outputs.url }}=sc4 \
           --data-binary "@$ASSET_PATH"
