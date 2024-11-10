@@ -15,7 +15,7 @@ jobs:
   test:
     runs-on: windows-latest
     outputs:
-      url: ${{ steps.read-version.outputs.version }}
+      url: ${{ steps.gh-release.outputs.upload_url }}
     if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.merged == true && contains(github.event.pull_request.labels.*.name, 'release'))
     steps:
       - uses: actions/checkout@v4
@@ -42,6 +42,7 @@ jobs:
       - run: echo ${{ steps.read-version.outputs.npm-tag }}
 
       - name: Create release
+        id: gh-release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ steps.read-version.outputs.version }}
