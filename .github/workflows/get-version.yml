@@ -59,7 +59,7 @@ jobs:
           UPLOAD_URL: ${{ needs.test.outputs.url }}
           ASSET_PATH: ./linux.html
         shell: bash
-        run:
+        run: |
           curl -L \
           -X POST \
           -H "Accept: application/vnd.github+json" \
