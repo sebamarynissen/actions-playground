@@ -52,5 +52,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: test
     steps:
-      - name: Echo
-        run: echo ${{ needs.test.outputs.url }}
+      - uses: actions/checkout@v4
+      - name: Upload asset
+        env:
+          UPLOAD_URL: ${{ needs.test.outputs.url }}
+          ASSET_PATH: ./linux.html
+        shell: bash
+        run: |
+          curl -sSL -X POST -H "Authorization: token $GITHUB_TOKEN" -H "Content-Type: $(file -b --mime-type "$ASSET_PATH")" --data-binary @"$ASSET_PATH" "$UPLOAD_URL"
