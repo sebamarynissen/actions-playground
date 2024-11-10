@@ -57,6 +57,7 @@ jobs:
       - run: echo ${{ needs.test.outputs.url }}
       - name: Upload asset
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           UPLOAD_URL: ${{ needs.test.outputs.url }}
           ASSET_PATH: ./linux.html
         shell: bash
