@@ -27,6 +27,9 @@ const results = [
 
 async function handleResult(result) {
 
+	console.log(result);
+	return;
+
 	// If a PR already exists for this branch, it's probably a fix deployed by 
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
@@ -126,9 +129,11 @@ const { data: prs } = await octokit.pulls.list({
 	state: 'open',
 });
 spinner.succeed();
-console.log(prs);
 
 // Create PR's and update branches for every result.
 for (let result of results) {
-	// await handleResult(result);
+	await handleResult({
+		pr: prs.find(pr => pr.head.ref === result.branch),
+		...result,
+	});
 }
