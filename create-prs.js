@@ -47,11 +47,11 @@ async function handleResult(result) {
 		spinner.succeed();
 
 		// Reapply stash now.
-		spinner = ora('Reapplying stash');
-		await git.stash('apply',  '--index');
-		await git.checkout('stash@{0}', '--', '.');
-		await git.stash('drop');
-		spinner.succeed();
+		// spinner = ora('Reapplying stash');
+		// await git.stash('apply',  '--index');
+		// await git.checkout('stash@{0}', '--', '.');
+		// await git.stash('drop');
+		// spinner.succeed();
 
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
@@ -60,40 +60,40 @@ async function handleResult(result) {
 	}
 
 	// Add all the modified files & then commit.
-	spinner = ora('Committing files').start();
-	for (let file of result.files) {
-		await git.add(file);
-	}
-	await git.commit(result.title);
-	spinner.succeed();
-	spinner = ora(`Pushing ${result.branch} to origin`).start();
-	await git.push('origin', result.branch);
-	spinner.succeed();
+	// spinner = ora('Committing files').start();
+	// for (let file of result.files) {
+	// 	await git.add(file);
+	// }
+	// await git.commit(result.title);
+	// spinner.succeed();
+	// spinner = ora(`Pushing ${result.branch} to origin`).start();
+	// await git.push('origin', result.branch);
+	// spinner.succeed();
 
-	// If no PR existeed yet, then we have to push the branch. Otherwise it will 
-	// be handled for us.
-	if (prs.length === 0) {
-		let spinner = ora('Creating new PR on GitHub').start();
-		const { data: pr } = await octokit.pulls.create({
-			owner,
-			repo,
-			base: 'main',
-			title: result.title,
-			head: result.branch,
-			body: result.body,
-		});
-		spinner.succeed();
+	// // If no PR existeed yet, then we have to push the branch. Otherwise it will 
+	// // be handled for us.
+	// if (prs.length === 0) {
+	// 	let spinner = ora('Creating new PR on GitHub').start();
+	// 	const { data: pr } = await octokit.pulls.create({
+	// 		owner,
+	// 		repo,
+	// 		base: 'main',
+	// 		title: result.title,
+	// 		head: result.branch,
+	// 		body: result.body,
+	// 	});
+	// 	spinner.succeed();
 
-		spinner = ora('Adding labels').start();
-		octokit.issues.addLabels({
-			owner,
-			repo,
-			issue_number: pr.number,
-			labels: ['package'],
-		});
-		spinner.succeed();
+	// 	spinner = ora('Adding labels').start();
+	// 	octokit.issues.addLabels({
+	// 		owner,
+	// 		repo,
+	// 		issue_number: pr.number,
+	// 		labels: ['package'],
+	// 	});
+	// 	spinner.succeed();
 
-	}
+	// }
 
 	// Cool, now delete the branch again.
 	// await git.checkout('main');
