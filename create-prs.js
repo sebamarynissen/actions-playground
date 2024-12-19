@@ -8,6 +8,8 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 
+const wait = ms => new Promise(cb => setTimeout(cb, ms));
+
 const results = [
 	{
 		files: ['src/yaml/test.yaml'],
@@ -35,10 +37,24 @@ async function handleResult(result) {
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
 	if (prs.length > 0) {
+
+		// If a PR already exists, we'll pull the branch, but we first have to 
+		// stash the changes so that we can reapply it later on.
+		await git.stash();
 		let spinner = ora(`Pulling ${result.branch}`);
 		await git.pull('origin', result.branch);
 		await git.checkout(result.branch);
 		spinner.succeed();
+
+		// Reapply stash now.
+		spinner = ora('Reapplying stash');
+		await git.stash('apply --index');
+		await git.checkout('stash@{0} -- .');
+		await git.stash('drop');
+		spinner.succeed();
+
+		await wait(10_000);
+
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
 		await git.checkoutLocalBranch(result.branch);
