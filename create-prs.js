@@ -122,7 +122,7 @@ for (let result of results) {
 }
 
 // Reset the repository to a clean state.
-await git.reset('main');
+await git.reset('--hard', 'HEAD');
 await rl.question('Press any key');
 
 // Fetch all open PRs from GitHub so that can figure out which files are updates 
