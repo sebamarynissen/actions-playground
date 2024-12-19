@@ -50,9 +50,9 @@ async function handleResult(result) {
 		spinner.succeed();
 
 		// Reapply staging now.
-		spinner = ora('Reapplying staging');
-		await git.checkout(staging, '--', ...result.files);
-		spinner.succeed();
+		// spinner = ora('Reapplying staging');
+		// await git.checkout(staging, '--', ...result.files);
+		// spinner.succeed();
 
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
