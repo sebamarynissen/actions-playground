@@ -50,7 +50,7 @@ async function handleResult(result) {
 
 		// Reapply staging now.
 		spinner = ora('Reapplying stash');
-		await git.checkout(result.branch, ...result.files);
+		await git.checkout(result.branch, '--', ...result.files);
 		// await git.checkout('stash@{0}', '--', '.');
 		// await git.stash('drop');
 		// spinner.succeed();
