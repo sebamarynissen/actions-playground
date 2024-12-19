@@ -102,7 +102,7 @@ for (let result of results) {
 // read in all files in memory and then stash any changes.
 console.log(await git.add('.'));
 
-await rl.prompt('Press any key to continue');
+await rl.question('Press any key to continue');
 
 for (let result of results) {
 	let files = [];
