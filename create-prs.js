@@ -50,9 +50,9 @@ async function handleResult(result) {
 	for (let file of result.files) {
 		await git.add(file);
 	}
-	await git.commit(result.message);
+	await git.commit(result.title);
 	spinner.succeed();
-	spinner = ora(`Pushing ${result.branch} to origin`);
+	spinner = ora(`Pushing ${result.branch} to origin`).start();
 	await git.push('origin', result.branch);
 	spinner.succeed();
 
@@ -83,7 +83,7 @@ async function handleResult(result) {
 
 	// Cool, now delete the branch again.
 	await git.checkout('main');
-	await git.deleteLocalBranch(result.branch);
+	await git.deleteLocalBranch(result.branch, true);
 
 }
 
