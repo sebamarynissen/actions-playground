@@ -48,7 +48,7 @@ async function handleResult(result) {
 
 		// Reapply stash now.
 		// spinner = ora('Reapplying stash');
-		// await git.stash('apply',  '--index');
+		await git.stash('apply',  '--index');
 		// await git.checkout('stash@{0}', '--', '.');
 		// await git.stash('drop');
 		// spinner.succeed();
