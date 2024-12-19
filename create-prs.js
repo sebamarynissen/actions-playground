@@ -1,6 +1,7 @@
 // # create-prs.js
 import fs from 'node:fs';
 import path from 'node:path';
+import rl from 'node:readline/promises';
 import ora from 'ora';
 import simpleGit from 'simple-git';
 import { Octokit } from '@octokit/rest';
@@ -99,7 +100,10 @@ for (let result of results) {
 // in a clean state, meaning the added files are in the src/yaml file. However, 
 // we will need to fetch the branch of existing repos one by one, so we will 
 // read in all files in memory and then stash any changes.
-await git.add('.');
+console.log(await git.add('.'));
+
+await rl.prompt('Press any key to continue');
+
 for (let result of results) {
 	let files = [];
 	for (let name of result.files) {
