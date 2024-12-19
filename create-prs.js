@@ -38,9 +38,10 @@ async function handleResult(result) {
 	// the server.
 	if (prs.length > 0) {
 
-		// If a PR already exists, we'll pull the branch, but we first have to 
-		// stash the changes so that we can reapply it later on.
-		await git.stash();
+		// If a PR already exists, we'll commit the changes to a local "staging" 
+		// branch so that we can check them out later on.
+		await git.checkoutLocalBranch('staging');
+		await git.commit('Staging');
 		let spinner = ora(`Pulling ${result.branch}`);
 		await git.fetch();
 		await git.checkoutBranch(result.branch, `origin/${result.branch}`);
@@ -48,7 +49,7 @@ async function handleResult(result) {
 
 		// Reapply stash now.
 		// spinner = ora('Reapplying stash');
-		await git.stash('apply',  '--index');
+		// await git.stash('apply',  '--index');
 		// await git.checkout('stash@{0}', '--', '.');
 		// await git.stash('drop');
 		// spinner.succeed();
