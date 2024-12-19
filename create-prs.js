@@ -8,7 +8,6 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 
-const wait = ms => new Promise(cb => setTimeout(cb, ms));
 const randomHex = () => Math.random().toString(16).slice(2);
 
 const results = [
@@ -51,11 +50,9 @@ async function handleResult(result) {
 		spinner.succeed();
 
 		// Reapply staging now.
-		spinner = ora('Reapplying stash');
+		spinner = ora('Reapplying staging');
 		await git.checkout(staging, '--', ...result.files);
-		// await git.checkout('stash@{0}', '--', '.');
-		// await git.stash('drop');
-		// spinner.succeed();
+		spinner.succeed();
 
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
@@ -63,7 +60,7 @@ async function handleResult(result) {
 		spinner.succeed();
 	}
 
-	// Add all the modified files & then commit.
+	// // Add all the modified files & then commit.
 	// spinner = ora('Committing files').start();
 	// for (let file of result.files) {
 	// 	await git.add(file);
@@ -99,7 +96,7 @@ async function handleResult(result) {
 
 	// }
 
-	// Cool, now delete the branch again.
+	// // Cool, now delete the branch again.
 	// await git.checkout('main');
 	// await git.deleteLocalBranch(result.branch, true);
 
