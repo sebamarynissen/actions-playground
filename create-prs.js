@@ -27,9 +27,6 @@ const results = [
 
 async function handleResult(result) {
 
-	// Make sure to always start from a clean repo state.
-	await git.stash();
-
 	// If a PR already exists for this branch, it's probably a fix deployed by 
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
@@ -102,6 +99,7 @@ for (let result of results) {
 // in a clean state, meaning the added files are in the src/yaml file. However, 
 // we will need to fetch the branch of existing repos one by one, so we will 
 // read in all files in memory and then stash any changes.
+await git.add('.');
 for (let result of results) {
 	let files = [];
 	for (let name of result.files) {
