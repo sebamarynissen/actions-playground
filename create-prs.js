@@ -96,8 +96,8 @@ async function handleResult(result) {
 	}
 
 	// Cool, now delete the branch again.
-	await git.checkout('main');
-	await git.deleteLocalBranch(result.branch, true);
+	// await git.checkout('main');
+	// await git.deleteLocalBranch(result.branch, true);
 
 }
 
