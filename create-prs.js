@@ -121,6 +121,10 @@ for (let result of results) {
 	result.files = files;
 }
 
+// Reset the repository to a clean state.
+await git.reset('main');
+await rl.question('Press any key');
+
 // Fetch all open PRs from GitHub so that can figure out which files are updates 
 // of existing, open PR's.
 let spinner = ora('Fetching open pull requests from GitHub').start();
