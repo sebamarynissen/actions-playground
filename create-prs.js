@@ -37,27 +37,18 @@ async function handleResult(result) {
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
 	if (prs.length > 0) {
-
-		// If a PR already exists, we'll commit the changes to a local "staging" 
-		// branch so that we can check them out later on.
-		let staging = `staging-${randomHex()}`;
-		await git.checkoutLocalBranch(staging);
-		await git.add('.');
-		await git.commit('Staging');
-		let spinner = ora(`Pulling ${result.branch}`);
-		await git.fetch();
+		let spinner = ora(`Checking out origin/${result.branch}`);
 		await git.checkoutBranch(result.branch, `origin/${result.branch}`);
 		spinner.succeed();
-
-		// Reapply staging now.
-		// spinner = ora('Reapplying staging');
-		// await git.checkout(staging, '--', ...result.files);
-		// spinner.succeed();
-
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
 		await git.checkoutLocalBranch(result.branch);
 		spinner.succeed();
+	}
+
+	// Re-apply the changes from this package.
+	for (let file of result.files) {
+		await fs.promises.writeFile(file.fullPath, file.contents);
 	}
 
 	// // Add all the modified files & then commit.
@@ -110,6 +101,28 @@ for (let result of results) {
 	}
 }
 
+// At this point, we assume that the repository is on the main branch, but not 
+// in a clean state, meaning the added files are in the src/yaml file. However, 
+// we will need to fetch the branch of existing repos one by one, so we will 
+// read in all files in memory and then stash any changes.
+for (let result of results) {
+	let files = [];
+	for (let name of result.files) {
+		let fullPath = path.join(process.env.GITHUB_WORKSPACE, name);
+		let contents = await fs.promises.readFile(fullPath);
+		files.push({
+			name,
+			path: fullPath,
+			contents,
+		});
+	}
+	result.files = files;
+}
+
+// After we've read the files into memory, we will remove them again from the repo.
+await git.stash();
+
+// Create PR's and update branches for every result.
 for (let result of results) {
 	await handleResult(result);
 }
