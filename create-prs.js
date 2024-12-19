@@ -126,8 +126,9 @@ const { data: prs } = await octokit.pulls.list({
 	state: 'open',
 });
 spinner.succeed();
+console.log(prs);
 
 // Create PR's and update branches for every result.
 for (let result of results) {
-	await handleResult(result);
+	// await handleResult(result);
 }
