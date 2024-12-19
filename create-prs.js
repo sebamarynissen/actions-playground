@@ -41,6 +41,7 @@ async function handleResult(result) {
 		// If a PR already exists, we'll commit the changes to a local "staging" 
 		// branch so that we can check them out later on.
 		await git.checkoutLocalBranch('staging');
+		await git.add('.');
 		await git.commit('Staging');
 		let spinner = ora(`Pulling ${result.branch}`);
 		await git.fetch();
