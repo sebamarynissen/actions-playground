@@ -47,9 +47,9 @@ async function handleResult(result) {
 		await git.checkoutBranch(result.branch, `origin/${result.branch}`);
 		spinner.succeed();
 
-		// Reapply stash now.
-		// spinner = ora('Reapplying stash');
-		// await git.stash('apply',  '--index');
+		// Reapply staging now.
+		spinner = ora('Reapplying stash');
+		await git.checkout(result.branch, ...result.files);
 		// await git.checkout('stash@{0}', '--', '.');
 		// await git.stash('drop');
 		// spinner.succeed();
