@@ -17,30 +17,21 @@ const results = [
 		title: 'pkg: smf-16:one',
 		body: 'Adds the following packages:\n- smf-16:one\n- smf-16:one-resources',
 	},
-	{
-		files: ['src/yaml/date.yaml'],
-		branch: 'package/smf-16/date',
-		title: 'pkg: smf-16:date',
-		body: 'Adds the following packages:\n- smf-16:date',
-	},
+	// {
+	// 	files: ['src/yaml/date.yaml'],
+	// 	branch: 'package/smf-16/date',
+	// 	title: 'pkg: smf-16:date',
+	// 	body: 'Adds the following packages:\n- smf-16:date',
+	// },
 ];
 
 async function handleResult(result) {
 
-	// We will first list all PR's
-	let spinner = ora('Getting open pull requests').start();
-	const { data: prs } = await octokit.pulls.list({
-		owner,
-		repo,
-		state: 'open',
-		head: `${process.env.GH_OWNER}/${result.branch}`,
-	});
-	spinner.succeed();
-
 	// If a PR already exists for this branch, it's probably a fix deployed by 
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
-	if (prs.length > 0) {
+	let { pr } = result;
+	if (pr) {
 		let spinner = ora(`Checking out origin/${result.branch}`);
 		await git.checkoutBranch(result.branch, `origin/${result.branch}`);
 		spinner.succeed();
@@ -135,9 +126,8 @@ const { data: prs } = await octokit.pulls.list({
 	state: 'open',
 });
 spinner.succeed();
-console.log(prs);
 
 // Create PR's and update branches for every result.
-// for (let result of results) {
-	// await handleResult(result);
-// }
+for (let result of results) {
+	await handleResult(result);
+}
