@@ -17,12 +17,12 @@ const results = [
 		title: 'pkg: smf-16:one',
 		body: 'Adds the following packages:\n- smf-16:one\n- smf-16:one-resources',
 	},
-	// {
-	// 	files: ['src/yaml/date.yaml'],
-	// 	branch: 'package/smf-16/date',
-	// 	title: 'pkg: smf-16:date',
-	// 	body: 'Adds the following packages:\n- smf-16:date',
-	// },
+	{
+		files: ['src/yaml/date.yaml'],
+		branch: 'package/smf-16/date',
+		title: 'pkg: smf-16:date',
+		body: 'Adds the following packages:\n- smf-16:date',
+	},
 ];
 
 async function handleResult(result) {
