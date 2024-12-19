@@ -42,7 +42,7 @@ async function handleResult(result) {
 		// stash the changes so that we can reapply it later on.
 		await git.stash();
 		let spinner = ora(`Pulling ${result.branch}`);
-		await git.pull('origin', result.branch);
+		await git.fetch('origin', result.branch);
 		await git.checkout(result.branch);
 		spinner.succeed();
 
