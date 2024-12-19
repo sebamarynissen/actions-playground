@@ -7,6 +7,8 @@ import { Octokit } from '@octokit/rest';
 const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
+const owner = process.env.GITHUB_OWNER;
+const repo = process.env.GITHUB_REPO;
 
 const results = [
 	{
@@ -26,8 +28,6 @@ const results = [
 async function handleResult(result) {
 
 	// We will first list all PR's
-	const owner = process.env.GITHUB_OWNER;
-	const repo = process.env.GITHUB_REPO;
 	let spinner = ora('Getting open pull requests').start();
 	const { data: prs } = await octokit.pulls.list({
 		owner,
@@ -122,10 +122,22 @@ for (let result of results) {
 	result.files = files;
 }
 
-// After we've read the files into memory, we will remove them again from the repo.
+// After we've read the files into memory, we will remove them again from the 
+// repo.
 await git.stash();
 
+// Fetch all open PRs from GitHub so that can figure out which files are updates 
+// of existing, open PR's.
+let spinner = ora('Fetching open pull requests from GitHub').start();
+const { data: prs } = await octokit.pulls.list({
+	owner,
+	repo,
+	state: 'open',
+});
+spinner.succeed();
+console.log(prs);
+
 // Create PR's and update branches for every result.
-for (let result of results) {
-	await handleResult(result);
-}
+// for (let result of results) {
+	// await handleResult(result);
+// }
