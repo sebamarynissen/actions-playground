@@ -1,7 +1,7 @@
 // # create-prs.js
 import fs from 'node:fs';
 import path from 'node:path';
-import rl from 'node:readline/promises';
+import readline from 'node:readline/promises';
 import ora from 'ora';
 import simpleGit from 'simple-git';
 import { Octokit } from '@octokit/rest';
@@ -10,6 +10,9 @@ const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 const owner = process.env.GITHUB_OWNER;
 const repo = process.env.GITHUB_REPO;
+
+import { stdin as input, stdout as output } from 'node:process';
+const rl = readline.createInterface({ input, output });
 
 const results = [
 	{
