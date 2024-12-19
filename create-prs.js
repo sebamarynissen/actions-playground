@@ -9,6 +9,7 @@ const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 
 const wait = ms => new Promise(cb => setTimeout(cb, ms));
+const randomHex = () => Math.random().toString(16).slice(2);
 
 const results = [
 	{
@@ -40,7 +41,8 @@ async function handleResult(result) {
 
 		// If a PR already exists, we'll commit the changes to a local "staging" 
 		// branch so that we can check them out later on.
-		await git.checkoutLocalBranch('staging');
+		let staging = `staging-${randomHex()}`;
+		await git.checkoutLocalBranch(staging);
 		await git.add('.');
 		await git.commit('Staging');
 		let spinner = ora(`Pulling ${result.branch}`);
@@ -50,7 +52,7 @@ async function handleResult(result) {
 
 		// Reapply staging now.
 		spinner = ora('Reapplying stash');
-		await git.checkout(result.branch, '--', ...result.files);
+		await git.checkout(staging, '--', ...result.files);
 		// await git.checkout('stash@{0}', '--', '.');
 		// await git.stash('drop');
 		// spinner.succeed();
