@@ -27,9 +27,6 @@ const results = [
 
 async function handleResult(result) {
 
-	console.log(result);
-	return;
-
 	// If a PR already exists for this branch, it's probably a fix deployed by 
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
@@ -62,7 +59,7 @@ async function handleResult(result) {
 
 	// If no PR existeed yet, then we have to push the branch. Otherwise it will 
 	// be handled for us.
-	if (prs.length === 0) {
+	if (!pr) {
 		let spinner = ora('Creating new PR on GitHub').start();
 		const { data: pr } = await octokit.pulls.create({
 			owner,
