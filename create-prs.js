@@ -8,8 +8,6 @@ const octokit = new Octokit({ auth: process.env.GITHUB_TOKEN });
 const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 
-const randomHex = () => Math.random().toString(16).slice(2);
-
 const results = [
 	{
 		files: ['src/yaml/test.yaml'],
@@ -97,7 +95,7 @@ async function handleResult(result) {
 for (let result of results) {
 	for (let file of result.files) {
 		await fs.promises.mkdir(path.dirname(file), { recursive: true });
-		await fs.promises.writeFile(file, String(Math.random()));
+		await fs.promises.writeFile(file, new Date().toISOString());
 	}
 }
 
