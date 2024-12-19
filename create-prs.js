@@ -1,7 +1,6 @@
 // # create-prs.js
 import fs from 'node:fs';
 import path from 'node:path';
-import readline from 'node:readline/promises';
 import ora from 'ora';
 import simpleGit from 'simple-git';
 import { Octokit } from '@octokit/rest';
@@ -10,9 +9,6 @@ const baseDir = process.cwd();
 const git = simpleGit({ baseDir });
 const owner = process.env.GITHUB_OWNER;
 const repo = process.env.GITHUB_REPO;
-
-import { stdin as input, stdout as output } from 'node:process';
-const rl = readline.createInterface({ input, output });
 
 const results = [
 	{
@@ -103,9 +99,7 @@ for (let result of results) {
 // in a clean state, meaning the added files are in the src/yaml file. However, 
 // we will need to fetch the branch of existing repos one by one, so we will 
 // read in all files in memory and then stash any changes.
-console.log(await git.add('.'));
-
-await rl.question('Press any key to continue');
+await git.add('.');
 
 for (let result of results) {
 	let files = [];
@@ -123,7 +117,6 @@ for (let result of results) {
 
 // Reset the repository to a clean state.
 await git.reset({ '--hard': true });
-await rl.question('Press any key');
 
 // Fetch all open PRs from GitHub so that can figure out which files are updates 
 // of existing, open PR's.
