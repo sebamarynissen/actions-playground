@@ -41,10 +41,12 @@ async function handleResult(result) {
 		// If a PR already exists, we'll pull the branch, but we first have to 
 		// stash the changes so that we can reapply it later on.
 		await git.stash();
+		await wait(2_000);
 		let spinner = ora(`Pulling ${result.branch}`);
 		await git.fetch('origin', result.branch);
 		await git.checkout(result.branch);
 		spinner.succeed();
+		await wait(5_000);
 
 		// Reapply stash now.
 		spinner = ora('Reapplying stash');
@@ -52,6 +54,7 @@ async function handleResult(result) {
 		await git.checkout('stash@{0}', '--', '.');
 		await git.stash('drop');
 		spinner.succeed();
+		await wait(10_000);
 
 	} else {
 		let spinner = ora(`Creating new branch ${result.branch}`);
