@@ -65,7 +65,7 @@ async function handleResult(result) {
 		octokit.issues.addLabels({
 			owner,
 			repo,
-			issue_number: pr.id,
+			issue_number: pr.number,
 			labels: ['package'],
 		});
 		spinner.succeed();
