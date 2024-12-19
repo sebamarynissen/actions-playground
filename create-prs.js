@@ -27,6 +27,9 @@ const results = [
 
 async function handleResult(result) {
 
+	// Make sure to always start from a clean repo state.
+	await git.stash();
+
 	// If a PR already exists for this branch, it's probably a fix deployed by 
 	// the creator of the package. This means we have to fetch the branch from 
 	// the server.
@@ -112,10 +115,6 @@ for (let result of results) {
 	}
 	result.files = files;
 }
-
-// After we've read the files into memory, we will remove them again from the 
-// repo.
-await git.stash();
 
 // Fetch all open PRs from GitHub so that can figure out which files are updates 
 // of existing, open PR's.
