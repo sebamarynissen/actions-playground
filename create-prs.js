@@ -48,7 +48,7 @@ async function handleResult(result) {
 
 	// Re-apply the changes from this package.
 	for (let file of result.files) {
-		await fs.promises.writeFile(file.fullPath, file.contents);
+		await fs.promises.writeFile(file.path, file.contents);
 	}
 
 	// // Add all the modified files & then commit.
