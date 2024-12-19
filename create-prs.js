@@ -91,7 +91,7 @@ async function handleResult(result) {
 for (let result of results) {
 	for (let file of result.files) {
 		await fs.promises.mkdir(path.dirname(file), { recursive: true });
-		await fs.promises.writeFile(file, String(Math.random()));
+		// await fs.promises.writeFile(file, String(Math.random()));
 	}
 }
 
