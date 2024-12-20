@@ -1,0 +1,16 @@
+name: Configure user
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/github-script
+        with:
+          script: |
+            if (typeof github !== 'undefined') console.log(github);
+            if (typeof octokit !== 'undefined') console.log(octokit);
