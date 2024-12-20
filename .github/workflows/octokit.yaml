@@ -12,4 +12,5 @@ jobs:
       - uses: actions/github-script@v7
         with:
           script: |
-            console.log(octokit.repos.createCommitStatus);
+            if (typeof github !== 'undefined') console.log('github', github);
+            if (typeof octokit !== 'undefined') console.log('octokit', octokit);
